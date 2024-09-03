@@ -1,5 +1,16 @@
-hy2LPTFoam is based on hy2Foam in hyStrath:https://github.com/hystrath/hyStrath
+hy2LPTFoam is an open-source code for solving non-equilibrium high-speed gas-paricle flows.
+For more detail, please find the paper:
 
-Please install hy2Foam before compile any code of hy2LPTFoam.
+hy2LPTFoam is based on hy2Foam in hyStrath:https://github.com/hystrath/hyStrath.
 
-Once you have installed hy2Foam, you can copy the folder to your working space, go to src/lagrangian/
+Please install hy2Foam with OpenFOAM-v1706 before compile any code of hy2LPTFoam.
+
+Once you have installed hy2Foam, you can copy the folder to your working space, e.g. XXXX-v1706.
+The code can be compiled in the following steps:
+1.Go to src/lagrangian/basic, run "wmake libso"
+2.Go to src/lagrangian/LPT, run "wmake libso"
+3.Go to applications/preProcessing/solidInitialise, run "wmake"
+4.Go to applications/solvers/hy2LPTFoam/BCs, run "wmake libso"
+5.Go to applications/solvers/hy2LPTFoam, run "wmake"
+
+A tutorial case corresponding to "MSRO body:hypersonic non-equilibrium flow during Mars entry" with particle mass fraction 0.014% is uploaded.
