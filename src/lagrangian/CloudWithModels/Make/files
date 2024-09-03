@@ -1,3 +1,0 @@
-cloudSolution/cloudSolution.C
-
-LIB = $(FOAM_USER_LIBBIN)/liblagrangianCloudBase
