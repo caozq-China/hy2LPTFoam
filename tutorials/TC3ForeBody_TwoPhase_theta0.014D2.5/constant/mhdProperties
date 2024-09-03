@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1706                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       noMHD;
+    location    "constant";
+    object      mhdProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+active          false;
+
+mhdModel        noMHD;
+
+hallEffect      false;
+
+electricalConductivityModel Bush;
+
+constantElectricalConductivityCoeffs
+{
+    value           5100;
+}
+
+BushCoeffs
+{
+    sigma0          5100;
+    T0              12000;
+    n               2;
+}
+
+
+// ************************************************************************* //
