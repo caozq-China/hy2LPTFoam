@@ -1,6 +1,7 @@
 
 EXE_INC = \
-    -I$(WM_PROJECT_USER_DIR)/src/lagrangian/solidParticlePlus/lnInclude \
+    -IBCs/lnInclude \
+    -I$(WM_PROJECT_USER_DIR)/src/lagrangian/LPT/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/lagrangian/basic/lnInclude \
@@ -25,7 +26,8 @@ EXE_INC = \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) \
-        -lsolidParticlePlus \
+        -lLPT \
+        -lhyTwoFoamBoundary \
     -lsampling \
     -lfiniteVolume \
     -lmeshTools \
