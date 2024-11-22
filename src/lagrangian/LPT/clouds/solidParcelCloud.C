@@ -179,7 +179,7 @@ Foam::solidParcelCloud::solidParcelCloud
     typeIdList_(particleProperties_.lookup("typeIdList")),
     constProps_(),
     g_(g),
-    nParticle(readScalar(particleProperties_.lookup("nEquivalentParticles"))),
+    nParticle_(readScalar(particleProperties_.lookup("nEquivalentParticles"))),
     radialExtent_(0.0),
     maxRWF_(1.0),
     interiorInteractionType_(readLabel(particleProperties_.lookup("interiorInteractionType"))),
@@ -490,7 +490,8 @@ Foam::solidParcelCloud::solidParcelCloud
     subModelProperties_(particleProperties_.subDict("subModels")),
     typeIdList_(particleProperties_.lookup("typeIdList")),
     constProps_(),
-    nParticle(readScalar(particleProperties_.lookup("nEquivalentParticles"))),
+    g_(g),
+    nParticle_(readScalar(particleProperties_.lookup("nEquivalentParticles"))),
     radialExtent_(0.0),
     maxRWF_(1.0),
     interiorInteractionType_(readLabel(particleProperties_.lookup("interiorInteractionType"))),
@@ -640,7 +641,7 @@ Foam::solidParcelCloud::solidParcelCloud
     //particleCoordinateSystem_(coordinateSystemType::New(t,mesh,*this)),
     cellOccupancyPtr_(),
     rndGen_(label(clock::getTime()) + 7183*Pstream::myProcNo()),
-    solution_(mesh_, particleProperties_.subDict("solution")),List<DynamicList<solidParcel*>>& cellOccupancy = cellOccupancyPtr_();
+    solution_(mesh_, particleProperties_.subDict("solution")),
     forcesList_
     (
         *this,
@@ -1160,7 +1161,7 @@ void Foam::solidParcelCloud::axisymmetricWeighting()
                     addNewParcel
                     (
                         mesh_,
-                        constProps[p->typeId()],
+                        constProps(p->typeId()),
                         position,
                         p->U(),
                         p->RWF(),
@@ -1174,7 +1175,7 @@ void Foam::solidParcelCloud::axisymmetricWeighting()
                     prob -= 1.0;
                 }
 
-                if(prob > rndGen_.scalar01())
+                if(prob > rndGen_.sample01<scalar>())
                 {
                     vector position = p->position();
                     
@@ -1193,7 +1194,7 @@ void Foam::solidParcelCloud::axisymmetricWeighting()
                     addNewParcel
                     (
                         mesh_,
-                        constProps[p->typeId()],
+                        constProps(p->typeId()),
                         position,
                         p->U(),
                         p->RWF(),
@@ -1207,7 +1208,7 @@ void Foam::solidParcelCloud::axisymmetricWeighting()
             }
             if(newRWF > oldRWF)
             {
-                if((oldRWF/newRWF) < rndGen_.scalar01())
+                if((oldRWF/newRWF) < rndGen_.sample01<scalar>())
                 {
                     deleteParticle(*p);
                 }
