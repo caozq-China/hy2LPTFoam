@@ -335,15 +335,40 @@ void solidVolFields::calculateField()
             if(iD != -1)
             {
                 const label cell = p.cell();
-                const scalar nParticles = cloud_.nParticles(cell);
+                const scalar nParticles = cloud_.nParticle();
                 const scalar mass = p.mass();     
                 const vector& U = p.U();
                                 
                 nParcelsCum_[cell] += 1.0;
-                nCum_[cell] += nParticles;
-                mCum_[cell] += mass*nParticles;
+
+                if(cloud_.axisymmetric())
+                {
+                    const point& cC = cloud_.mesh().cellCentres()[cell];
+                    
+                    scalar radius = cC.y();
+                    
+                    scalar RWF = 1.0;
+                    
+                    RWF = 1.0 + 
+                        cloud_.maxRWF()*(radius/cloud_.radialExtent());
+                    nCum_[cell] += RWF*nParticles;
+                    mCum_[cell] += mass*RWF*nParticles;
                 
-                momentumCum_[cell] += (mass*(U)*nParticles);
+                    momentumCum_[cell] += (mass*(U)*RWF*nParticles);
+                    //rhoNMeanXnParticle_[cell] += (RWF*nParticle);
+                    //rhoMMeanXnParticle_[cell] += (mass*RWF*nParticle);
+                }
+                else
+                {
+                    nCum_[cell] += nParticles;
+                    mCum_[cell] += mass*nParticles;
+                
+                    momentumCum_[cell] += (mass*(U)*nParticles);
+                }
+                //nCum_[cell] += nParticles;
+                //mCum_[cell] += mass*nParticles;
+                
+                //momentumCum_[cell] += (mass*(U)*nParticles);
             }
         }
         
@@ -419,7 +444,8 @@ void solidVolFields::calculateField()
                         // is why the parcel RWFs are already included during
                         // the measurement step and we only need the FNUM value
                         // here.
-                        const scalar nParticles = cloud_.coordSystem().dtModel().nParticles(j, k);
+                        //const scalar nParticles = cloud_.coordSystem().dtModel().nParticles(j, k);
+                        const scalar nParticles = cloud_.nParticle();
 
                         nParcelMean_.boundaryFieldRef()[j][k] = nParcelMean_[celli];
                         rhoN_.boundaryFieldRef()[j][k] = rhoNBF_[j][k]*nParticles/nAvTimeSteps;
