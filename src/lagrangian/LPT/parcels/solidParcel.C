@@ -136,7 +136,7 @@ void Foam::solidParcel::calc
 {
     // Define local properties at beginning of time step
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    const scalar np0 = td.cloud().nParticles(this->cell());
+    const scalar np0 = td.cloud().nParticle()*RWF();
 
     const scalar mass0 = mass();
 
@@ -555,4 +555,3 @@ Foam::scalar Foam::solidParcel::wallImpactDistance(const vector&) const
 
 // ************************************************************************* //
 #include "solidParcelIO.C"
-
