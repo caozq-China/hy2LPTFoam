@@ -640,7 +640,7 @@ Foam::solidParcelCloud::solidParcelCloud
     particleCoordinateSystem_(coordinateSystemType::New(t,mesh,*this)),
     cellOccupancyPtr_(),
     rndGen_(label(clock::getTime()) + 7183*Pstream::myProcNo()),
-    solution_(mesh_, particleProperties_.subDict("solution")),
+    solution_(mesh_, particleProperties_.subDict("solution")),List<DynamicList<solidParcel*>>& cellOccupancy = cellOccupancyPtr_();
     forcesList_
     (
         *this,
@@ -1120,9 +1120,99 @@ void Foam::solidParcelCloud::addNewParcel
 
 void Foam::solidParcelCloud::axisymmetricWeighting()
 {
-    forAll(cellOccupancyPtr_, c)
+    List<DynamicList<solidParcel*>>& cellOccupancy = cellOccupancyPtr_();
+    forAll(cellOccupancy, c)
     {
+        const DynamicList<solidParcel*>& pInCell = cellOccupancy[c];
 
+        point cC = mesh_.cellCentres()[c];
+        scalar radius = cC.y();
+
+        forAll(pInCell, pIC)
+        {
+            solidParcel* p = pInCell[pIC];
+            scalar oldRWF = p->RWF();
+            scalar newRWF = 1.0;
+            newRWF = 1.0 + maxRWF_*(radius/radialExtent_);
+            p->RWF() = newRWF;
+
+            if(oldRWF > newRWF)
+            {
+                scalar prob = (oldRWF/newRWF) - 1.0;
+                while(prob>1.0)
+                {
+                    //add a particle and reduce prob by 1.0
+                   
+                    vector position = p->position();
+                    
+                    label cell = -1;
+                    label tetFace = -1;
+                    label tetPt = -1;
+
+                    mesh_.findCellFacePt
+                    (
+                        position,
+                        cell,
+                        tetFace,
+                        tetPt
+                    );
+
+                    addNewParcel
+                    (
+                        mesh_,
+                        constProps[p->typeId()],
+                        position,
+                        p->U(),
+                        p->RWF(),
+                        cell,
+                        tetFace,
+                        tetPt,
+                        p->typeId(),
+                        p->newParcel()
+                    );
+                    
+                    prob -= 1.0;
+                }
+
+                if(prob > rndGen_.scalar01())
+                {
+                    vector position = p->position();
+                    
+                    label cell = -1;
+                    label tetFace = -1;
+                    label tetPt = -1;
+
+                    mesh_.findCellFacePt
+                    (
+                        position,
+                        cell,
+                        tetFace,
+                        tetPt
+                    );
+
+                    addNewParcel
+                    (
+                        mesh_,
+                        constProps[p->typeId()],
+                        position,
+                        p->U(),
+                        p->RWF(),
+                        cell,
+                        tetFace,
+                        tetPt,
+                        p->typeId(),
+                        p->newParcel()
+                    );
+                }
+            }
+            if(newRWF > oldRWF)
+            {
+                if((oldRWF/newRWF) < rndGen_.scalar01())
+                {
+                    deleteParticle(*p);
+                }
+            }
+        }
     }
 }
 
