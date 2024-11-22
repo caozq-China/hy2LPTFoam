@@ -216,8 +216,8 @@ void solidPatchBoundary::measurePropertiesAfterControl(const solidParcel& p)
     // is used to calculate the post interaction values. In that case the
     // pre-interaction values (preIE and preIMom) are _not_ used.
     //const scalar nParticle = p.RWF() * spc_.coordSystem().dtModel().nParticles(wppIndex, wppLocalFace);
-    scalar nParticle = cloud_.nParticle();
-    if(cloud_.axisymmetric())
+    scalar nParticle = spc_.nParticle();
+    if(spc_.axisymmetric())
     {
         const vector fC = wpp.faceCentres()[wppLocalFace];
         
@@ -227,7 +227,7 @@ void solidPatchBoundary::measurePropertiesAfterControl(const solidParcel& p)
         
         scalar RWF = 1.0;
 
-        RWF = 1.0 + cloud_.maxRWF()*(radius/cloud_.radialExtent());
+        RWF = 1.0 + spc_.maxRWF()*(radius/spc_.radialExtent());
       
         nParticle *= RWF;
     }
