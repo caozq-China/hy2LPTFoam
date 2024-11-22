@@ -495,6 +495,8 @@ public:
             // void collideMotion(solidParcel::trackingData& td);
             void MPPICMotion(solidParcel::trackingData& td);
 
+            void axisymmetricWeighting();
+
             void addNewParcel
             (
                 const polyMesh& owner,
