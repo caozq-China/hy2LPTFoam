@@ -79,7 +79,9 @@ void zoneFill::setInitialConfiguration()
             numberDensitiesDict.lookup(particles[i])
         );
     }
-    
+
+    numberDensities /= cloud_.nParticle();
+
     const cellZoneMesh& cellZones = mesh_.cellZones();
     const word zoneName(initialiseDict_.lookup("zoneName"));
     const label zoneId = cellZones.findZoneID(zoneName);
@@ -133,7 +135,17 @@ void zoneFill::setInitialConfiguration()
                     
                     scalar particlesRequired = numberDensity*tetVolume;
 
-                    particlesRequired /= cloud_.nParticles(cellI);
+                    if(cloud_.axisymmetric())
+                    {                    
+                        const point& cC = cloud_.mesh().cellCentres()[cellI];
+                        scalar radius = cC.y();
+                        
+                        scalar RWF = 1.0 + cloud_.maxRWF()*(radius/cloud_.radialExtent());
+                        
+                        particlesRequired /= RWF;
+                    }
+
+                    //particlesRequired /= cloud_.nParticle(cellI);
 
                     label nParticlesToInsert = label(particlesRequired);
 
@@ -166,7 +178,18 @@ void zoneFill::setInitialConfiguration()
                             U.z() = sinElevationAngle*sin(epsilonAngle);
                         }
 
-                        const scalar& RWF = cloud_.coordSystem().RWF(cellI);
+                        //const scalar& RWF = cloud_.coordSystem().RWF(cellI);
+
+                        scalar RWF = 1.0;
+                        
+                        if(cloud_.axisymmetric())
+                        {                      
+                            const point& cC = cloud_.mesh().cellCentres()[cellI];
+                            scalar radius = cC.y();
+                            
+                            RWF = 1.0 + cloud_.maxRWF()*(radius/cloud_.radialExtent());
+                        }
+
                         cloud_.addNewParcel
                         (
                             mesh_,
