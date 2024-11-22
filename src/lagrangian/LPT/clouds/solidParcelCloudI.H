@@ -69,30 +69,45 @@ inline const Foam::List<Foam::word>& Foam::solidParcelCloud::typeIdList() const
 
 inline Foam::scalar Foam::solidParcelCloud::nParticle() const
 {
-    return coordSystem().nParticlesOrg();
+    // return coordSystem().nParticlesOrg();
+    return nParticle_;
 }
 
-
-inline const Foam::volScalarField& Foam::solidParcelCloud::nParticles() const
+inline Foam::scalar Foam::solidParcelCloud::radialExtent() const
 {
-    return coordSystem().nParticles();
+    return radialExtent_;
 }
 
-
-inline Foam::scalar Foam::solidParcelCloud::nParticles(const label celli) const
+inline Foam::scalar Foam::solidParcelCloud::maxRWF() const
 {
-    return coordSystem().nParticles(celli);
+    return maxRWF_;
 }
 
-
-inline Foam::scalar Foam::solidParcelCloud::nParticles
-(
-    const label patchi,
-    const label facei
-) const
+inline bool Foam::solidParcelCloud::axisymmetric() const
 {
-    return coordSystem().nParticles(patchi, facei);
+    return axisymmetric_;
 }
+
+//inline const Foam::volScalarField& Foam::solidParcelCloud::nParticles() const
+//{
+//    return coordSystem().nParticles();
+//}
+
+
+//inline Foam::scalar Foam::solidParcelCloud::nParticles(const label celli) const
+//{
+//    return coordSystem().nParticles(celli);
+//}
+
+
+//inline Foam::scalar Foam::solidParcelCloud::nParticles
+//(
+//    const label patchi,
+//    const label facei
+//) const
+//{
+//    return coordSystem().nParticles(patchi, facei);
+//}
 
 inline Foam::List<Foam::DynamicList<Foam::solidParcel*>>& Foam::solidParcelCloud::cellOccupancy()
 {
