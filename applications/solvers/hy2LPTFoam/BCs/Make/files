@@ -8,4 +8,4 @@ T/nonEqSmoluchowskiJumpTv/nonEqSmoluchowskiJumpTvFvPatchScalarField.C
 T/nonEqSmoluchowskiJumpTvMix/nonEqSmoluchowskiJumpTvMixFvPatchScalarField.C
 T/radiativeEquilibriumWallTemperature/radiationEquilibriumFvPatchScalarField.C
 
-LIB = $(FOAM_USER_LIBBIN)/libhyTwoFoam
+LIB = $(FOAM_USER_LIBBIN)/libhyTwoFoamBoundary
