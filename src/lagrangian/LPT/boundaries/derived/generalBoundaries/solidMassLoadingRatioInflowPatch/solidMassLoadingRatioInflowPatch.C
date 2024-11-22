@@ -95,14 +95,14 @@ void solidMassLoadingRatioInflowPatch::controlParcelsBeforeMove()
 
             //accumulatedParcelsToInsert_[i][f] +=
             //        fA*numberDensities_[i][f]*deltaT*(UcB[f] & (-sFnormal))/spc_.nParticles(patchId_,f);
-            if(cloud_.axisymmetric())
+            if(spc_.axisymmetric())
             {
-                const point fC = cloud_.mesh().faceCentres()[faceI];
+                const point fC = spc_.mesh().faceCentres()[faceI];
                 scalar radius = fC.y();
                 
                 scalar RWF = 1.0;
                     
-                RWF = 1.0 + cloud_.maxRWF()*(radius/cloud_.radialExtent());
+                RWF = 1.0 + spc_.maxRWF()*(radius/spc_.radialExtent());
                 accumulatedParcelsToInsert_[i][f] +=
                     fA*numberDensities_[i][f]*deltaT*(UcB[f] & (-sFnormal))/(spc_.nParticle()*RWF);
             }
@@ -199,12 +199,12 @@ void solidMassLoadingRatioInflowPatch::controlParcelsBeforeMove()
                 //const scalar RWF = spc_.coordSystem().RWF(cellI);
                 scalar RWF = 1.0;
                     
-                if(cloud_.axisymmetric())
+                if(spc_.axisymmetric())
                 {                      
-                    const point cC = cloud_.mesh().cellCentres()[cellI];
+                    const point cC = spc_.mesh().cellCentres()[cellI];
                     scalar radius = cC.y();
 
-                    RWF = 1.0 + cloud_.maxRWF()*(radius/cloud_.radialExtent());
+                    RWF = 1.0 + spc_.maxRWF()*(radius/spc_.radialExtent());
                 }
                 
                 spc_.addNewParcel
