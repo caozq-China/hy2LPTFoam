@@ -212,7 +212,7 @@ void Foam::Stochastic::calculate()
         solidParcel& p = iter();
         const tetIndices tetIs(p.cell(), p.tetFace(), p.tetPt(), mesh);
         // uTildeAverage.add(p.position(), tetIs, cloud_.nParticle()*p.mass()*p.U());
-        uTildeAverage.add(p.position(), tetIs, cloud_.nParticles(p.cell())*p.mass()*p.U());
+        uTildeAverage.add(p.position(), tetIs, cloud_.nParticle()*p.RWF()*p.mass()*p.U());
     }
     uTildeAverage.average(massAverage);
 
@@ -240,7 +240,7 @@ void Foam::Stochastic::calculate()
         (
             p.position(),
             tetIs,
-            cloud_.nParticles(p.cell())*p.mass()*magSqr(p.U() - uTilde)
+            cloud_.nParticle()*p.RWF()*p.mass()*magSqr(p.U() - uTilde)
             // cloud_.nParticle()*p.mass()*magSqr(p.U() - uTilde)
         );
     }
