@@ -526,7 +526,7 @@ inline const Foam::tmp<Foam::volScalarField> Foam::solidParcelCloud::np() const
         const solidParcel& p = iter();
         const label celli = p.cell();
 
-        np[celli] += nParticles(p.cell());
+        np[celli] += nParticle()*p.RWF();
     }
 
     return tnp;
@@ -541,7 +541,7 @@ inline void Foam::solidParcelCloud::updateTheta()
         const solidParcel& p = iter();
         const label celli = p.cell();
 
-        theta_.ref()[celli] += nParticles(p.cell())*p.volume();
+        theta_.ref()[celli] += nParticle()*p.RWF()*p.volume();
     }
 
     theta_.primitiveFieldRef() /= mesh_.V();
@@ -556,7 +556,7 @@ inline Foam::scalar Foam::solidParcelCloud::massInSystem() const
     {
          const solidParcel& p = iter();
 
-        sysMass += nParticles(p.cell())*p.mass();
+        sysMass += nParticle()*p.RWF()*p.mass();
     }
 
     return sysMass;
@@ -571,7 +571,7 @@ inline Foam::vector Foam::solidParcelCloud::linearMomentumOfSystem() const
     {
         const solidParcel& p = iter();
 
-        linearMomentum += nParticles(p.cell())*p.mass()*p.U();
+        linearMomentum += nParticle()*p.RWF()*p.mass()*p.U();
     }
 
     return linearMomentum;
@@ -586,7 +586,7 @@ inline Foam::scalar Foam::solidParcelCloud::linearKineticEnergyOfSystem() const
     {
         const solidParcel& p = iter();
 
-        linearKineticEnergy += nParticles(p.cell())*0.5*p.mass()*(p.U() & p.U());
+        linearKineticEnergy += nParticle()*p.RWF()*0.5*p.mass()*(p.U() & p.U());
     }
 
     return linearKineticEnergy;
