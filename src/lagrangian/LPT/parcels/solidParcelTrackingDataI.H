@@ -240,9 +240,9 @@ inline void Foam::solidParcel::trackingData::updateAverages
         const solidParcel& p = iter();
         const tetIndices tetIs(p.cell(), p.tetFace(), p.tetPt(), cloud.mesh());
 
-        const scalar m = cloud.nParticles(p.cell())*p.mass();
+        const scalar m = cloud.nParticle()*p.RWF()*p.mass();
 
-        volumeAverage_->add(p.position(), tetIs, cloud.nParticles(p.cell())*p.volume());
+        volumeAverage_->add(p.position(), tetIs, cloud.nParticle()*p.RWF()*p.volume());
         rhoAverage_->add(p.position(), tetIs, m*p.rho());
         uAverage_->add(p.position(), tetIs, m*p.U());
         massAverage_->add(p.position(), tetIs, m);
@@ -264,7 +264,7 @@ inline void Foam::solidParcel::trackingData::updateAverages
         (
             p.position(),
             tetIs,
-            cloud.nParticles(p.cell())*p.mass()*magSqr(p.U() - u)
+            cloud.nParticle()*p.RWF()*p.mass()*magSqr(p.U() - u)
         );
     }
     uSqrAverage_->average(massAverage_);
@@ -281,7 +281,7 @@ inline void Foam::solidParcel::trackingData::updateAverages
         (
             p.position(),
             tetIs,
-            cloud.nParticles(p.cell())*pow(p.volume(), 2.0/3.0)
+            cloud.nParticle()*p.RWF()*pow(p.volume(), 2.0/3.0)
         );
     }
     weightAverage.average();
@@ -300,9 +300,9 @@ inline void Foam::solidParcel::trackingData::updateAverages
 
         const scalar f = 0.75*a/pow3(r)*sqr(0.5*p.d() + r)*mag(p.U() - u);
 
-        frequencyAverage_->add(p.position(), tetIs, cloud.nParticles(p.cell())*f*f);
+        frequencyAverage_->add(p.position(), tetIs, cloud.nParticle()*p.RWF()*f*f);
 
-        weightAverage.add(p.position(), tetIs, cloud.nParticles(p.cell())*f);
+        weightAverage.add(p.position(), tetIs, cloud.nParticle()*p.RWF()*f);
         
     }
     frequencyAverage_->average(weightAverage);
