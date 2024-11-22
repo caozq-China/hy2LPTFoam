@@ -56,7 +56,7 @@ SourceFiles
 #include "HeatTransferModel.H"
 #include "boundaryMeasurements.H"
 #include "solidFieldProperties.H"
-#include "coordinateSystemType.H"
+//#include "coordinateSystemType.H"
 #include "diffusionBasedSmoothing.H"
 #include "diffusionBasedGasFiltering.H"
 
@@ -146,7 +146,7 @@ private:
         scalarField cellLengthScale_;
 
         //- Coordinate system model: Cartesian, axisymmetric, spherical
-        autoPtr<coordinateSystemType> particleCoordinateSystem_;
+        //autoPtr<coordinateSystemType> particleCoordinateSystem_;
         
         //- A data structure holding which particles are in which cell
         autoPtr<List<DynamicList<solidParcel*>>> cellOccupancyPtr_;
@@ -383,8 +383,8 @@ public:
             inline solidBoundaries& boundaries();
 
             //- Return reference to coordinate system model
-            inline const coordinateSystemType& coordSystem() const;
-            inline coordinateSystemType& coordSystem();
+            //inline const coordinateSystemType& coordSystem() const;
+            //inline coordinateSystemType& coordSystem();
 
         // Integration schemes
 
