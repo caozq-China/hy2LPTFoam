@@ -106,7 +106,9 @@ private:
         //- Gravity
         const dimensionedVector& g_;
 
-        // scalar nParticle_;
+        scalar nParticle_;
+        scalar radialExtent_;
+        scalar maxRWF_;
 
         label interiorInteractionType_;
 
@@ -114,6 +116,7 @@ private:
         // Switch radiation_;
 
         // Switch UreduceD_;
+        bool axisymmetric_;
         Switch PreduceD_;
         Switch hasWallImpactDistance_;
 
@@ -293,16 +296,26 @@ public:
                 //- Return the number of real particles represented by one parcel
                 inline scalar nParticle() const;
 
+                //- Return the radius of the domain for axisymmetric cases
+                inline scalar radialExtent() const;
+                
+                //- Return the RWF for axisymmetric cases
+                inline scalar maxRWF() const;
+
+                //- Return the bool to identify if this is an axisymmetric simulation
+                //- Measurements, etc dealt with differently if true
+                inline bool axisymmetric() const;
+
                 //- Return the number of real particles represented by one parcel
-                inline const volScalarField& nParticles() const;
+                //inline const volScalarField& nParticles() const;
 
                 //- Return the number of real particles represented by one parcel for
                 //  a given cell
-                inline scalar nParticles(const label celli) const;
+                //inline scalar nParticles(const label celli) const;
 
                 //- Return the number of real particles represented by one parcel for
                 //  a given patch/face couple
-                inline scalar nParticles(const label patchi, const label facei) const;
+                //inline scalar nParticles(const label patchi, const label facei) const;
 
             //- Return all of the constant properties
             inline const List<solidParcel::constantProperties>& constProps() const;
