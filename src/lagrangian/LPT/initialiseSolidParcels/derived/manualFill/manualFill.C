@@ -90,7 +90,18 @@ void manualFill::setInitialConfiguration()
         );
 
         label typeId = 0;
-        const scalar& RWF = cloud_.coordSystem().RWF(injectorCells_[i]);
+        //const scalar& RWF = cloud_.coordSystem().RWF(injectorCells_[i]);
+        
+        scalar RWF = 1.0;
+                        
+        if(cloud_.axisymmetric())
+        {                      
+            const point& cC = cloud_.mesh().cellCentres()[injectorCells_[i]];
+            scalar radius = cC.y();
+            
+            RWF = 1.0 + cloud_.maxRWF()*(radius/cloud_.radialExtent());
+        }
+
         cloud_.addNewParcel
         (
             mesh_,
