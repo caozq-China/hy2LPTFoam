@@ -179,7 +179,11 @@ Foam::solidParcelCloud::solidParcelCloud
     typeIdList_(particleProperties_.lookup("typeIdList")),
     constProps_(),
     g_(g),
+    nParticle(readScalar(particleProperties_.lookup("nEquivalentParticles"))),
+    radialExtent_(0.0),
+    maxRWF_(1.0),
     interiorInteractionType_(readLabel(particleProperties_.lookup("interiorInteractionType"))),
+    axisymmetric_(Switch(particleProperties_.lookup("axisymmetric"))),
     PreduceD_(particleProperties_.lookupOrDefault("PreduceD",false)),
     hasWallImpactDistance_(particleProperties_.lookupOrDefault("hasWallImpactDistance",false)),
     thermo_(thermo),
@@ -437,7 +441,15 @@ Foam::solidParcelCloud::solidParcelCloud
     resetSourceTerms();
 
     buildConstProps();
-    coordSystem().checkCoordinateSystemInputs();
+    if(axisymmetric_)
+    {
+        radialExtent_ = 
+                readScalar(particleProperties_.lookup("radialExtentOfDomain"));
+        maxRWF_ = 
+            readScalar(particleProperties_.lookup("maxRadialWeightingFactor"));
+        maxRWF_ -= 1.0;
+    }
+    //coordSystem().checkCoordinateSystemInputs();
 
     buildCellOccupancy();
     
@@ -478,8 +490,11 @@ Foam::solidParcelCloud::solidParcelCloud
     subModelProperties_(particleProperties_.subDict("subModels")),
     typeIdList_(particleProperties_.lookup("typeIdList")),
     constProps_(),
-    g_(g),
+    nParticle(readScalar(particleProperties_.lookup("nEquivalentParticles"))),
+    radialExtent_(0.0),
+    maxRWF_(1.0),
     interiorInteractionType_(readLabel(particleProperties_.lookup("interiorInteractionType"))),
+    axisymmetric_(Switch(particleProperties_.lookup("axisymmetric"))),
     PreduceD_(false),
     hasWallImpactDistance_(false),
     thermo_(thermo),
@@ -745,6 +760,15 @@ Foam::solidParcelCloud::solidParcelCloud
 
         initialSolidParticles = 0;
     }
+
+    if(axisymmetric_)
+    {
+        radialExtent_ = 
+            readScalar(particleProperties_.lookup("radialExtentOfDomain"));
+        maxRWF_ = 
+            readScalar(particleProperties_.lookup("maxRadialWeightingFactor"));
+        maxRWF_ -= 1.0;
+    }
     
     buildConstProps();
 
@@ -819,12 +843,19 @@ void Foam::solidParcelCloud::evolveCloud
     {   
         td.part() = solidParcel::trackingData::LinearTrack;
         Cloud<solidParcel>::move(td,mesh_.time().deltaTValue());//- move particle
-        buildCellOccupancy();// update cell occupancy
-
+        if(axisymmetric_)
+        {
+            axisymmetricWeighting();
+            buildCellOccupancy();
+        }
+        else
+        {
+            buildCellOccupancy();// update cell occupancy
+        }
         //- Radial weighting for non-Cartesian flows (e.g., axisymmetric). This is
         // where parcels will receive their new RWF and will possibly be cloned or
         // deleted.
-        coordSystem().evolve();
+        //coordSystem().evolve();
     }
     else if(interiorInteractionType_==2)//- MPPIC
     {
@@ -892,12 +923,21 @@ void Foam::solidParcelCloud::MPPICMotion(solidParcel::trackingData& td)
         isotropyModel_->calculate();
     }
 
-    buildCellOccupancy();// update cell occupancy
+    //buildCellOccupancy();// update cell occupancy
+    if(axisymmetric_)
+    {
+        axisymmetricWeighting();
+        buildCellOccupancy();
+    }
+    else
+    {
+        buildCellOccupancy();// update cell occupancy
+    }
 
     //- Radial weighting for non-Cartesian flows (e.g., axisymmetric). This is
     // where parcels will receive their new RWF and will possibly be cloned or
     // deleted.
-    coordSystem().evolve();
+    //coordSystem().evolve();
 
     // forces().setCalc(true);
     forces().setCalcNonCoupled(true);
@@ -1076,6 +1116,14 @@ void Foam::solidParcelCloud::addNewParcel
     );
 
     addParticle(pPtr);
+}
+
+void Foam::solidParcelCloud::axisymmetricWeighting()
+{
+    forAll(cellOccupancyPtr_, c)
+    {
+
+    }
 }
 
 void Foam::solidParcelCloud::info()
