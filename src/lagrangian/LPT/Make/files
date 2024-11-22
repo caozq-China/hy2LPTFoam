@@ -5,13 +5,13 @@ Integration/Euler/Euler.C
 
 
 /* COORDINATE SYSTEM */
-coordinateSystem/basic/coordinateSystemType.C
-coordinateSystem/derived/Cartesian/particleCartesian.C
-coordinateSystem/derived/axisymmetric/particleAxisymmetric.C
+/*coordinateSystem/basic/coordinateSystemType.C*/
+/*coordinateSystem/derived/Cartesian/particleCartesian.C*/
+/*coordinateSystem/derived/axisymmetric/particleAxisymmetric.C*/
 
-coordinateSystem/timeStepModel/basic/TimeStepModel.C
-coordinateSystem/timeStepModel/derived/constantTimeStepModel/constantTimeStepModel.C
-coordinateSystem/timeStepModel/derived/variableTimeStepModel/variableTimeStepModel.C
+/*coordinateSystem/timeStepModel/basic/TimeStepModel.C*/
+/*coordinateSystem/timeStepModel/derived/constantTimeStepModel/constantTimeStepModel.C*/
+/*coordinateSystem/timeStepModel/derived/variableTimeStepModel/variableTimeStepModel.C*/
 
 
 /* HEAT TRANSFER MODEL */
