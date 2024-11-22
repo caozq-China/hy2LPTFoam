@@ -310,15 +310,15 @@ inline Foam::solidBoundaries& Foam::solidParcelCloud::boundaries()
     return boundaries_;
 }
 
-inline const Foam::coordinateSystemType& Foam::solidParcelCloud::coordSystem() const
-{
-    return particleCoordinateSystem_;
-}
+//inline const Foam::coordinateSystemType& Foam::solidParcelCloud::coordSystem() const
+//{
+//    return particleCoordinateSystem_;
+//}
 
-inline Foam::coordinateSystemType& Foam::solidParcelCloud::coordSystem()
-{
-    return particleCoordinateSystem_();
-}
+//inline Foam::coordinateSystemType& Foam::solidParcelCloud::coordSystem()
+//{
+//    return particleCoordinateSystem_();
+//}
 
 inline const Foam::integrationScheme& Foam::solidParcelCloud::UIntegrator() const
 {
