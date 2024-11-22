@@ -9,7 +9,7 @@ Once you have installed hy2Foam, you can copy the folder to your working space, 
 The code can be compiled in the following steps:
 1.Go to src/lagrangian/basic, run "wmake libso" in the terminal
 2.Go to src/lagrangian/LPT, run "wmake libso" in the terminal
-3.Go to applications/preProcessing/solidInitialise, run "wmake" in the terminal
+3.Go to applications/preProcessing/solidInitialise, copy BCs/ in applications/solvers/hy2LPTFoam to current directory and run "wmake libso" in BCs, then run "wmake" in the terminal to compile solidInitialise
 4.Go to applications/solvers/hy2LPTFoam/BCs, run "wmake libso" in the terminal
 5.Go to applications/solvers/hy2LPTFoam, run "wmake" in the terminal
 
