@@ -326,7 +326,7 @@ Foam::solidParcelCloud::solidParcelCloud
         dimensionedScalar("0", dimless, 0)
     ),
     cellLengthScale_(cbrt(mesh_.V())),
-    particleCoordinateSystem_(coordinateSystemType::New(t,mesh,*this)),
+    //particleCoordinateSystem_(coordinateSystemType::New(t,mesh,*this)),
     cellOccupancyPtr_(),
     rndGen_(label(clock::getTime()) + 7183*Pstream::myProcNo()),
     solution_(mesh_, particleProperties_.subDict("solution")),
@@ -637,7 +637,7 @@ Foam::solidParcelCloud::solidParcelCloud
         dimensionedScalar("0", dimless, 0)
     ),
     cellLengthScale_(cbrt(mesh_.V())),
-    particleCoordinateSystem_(coordinateSystemType::New(t,mesh,*this)),
+    //particleCoordinateSystem_(coordinateSystemType::New(t,mesh,*this)),
     cellOccupancyPtr_(),
     rndGen_(label(clock::getTime()) + 7183*Pstream::myProcNo()),
     solution_(mesh_, particleProperties_.subDict("solution")),List<DynamicList<solidParcel*>>& cellOccupancy = cellOccupancyPtr_();
