@@ -1,0 +1,121 @@
+/* integration schemes */
+Integration/integrationScheme/integrationScheme.C
+Integration/integrationScheme/integrationSchemeNew.C
+Integration/Euler/Euler.C
+
+
+/* COORDINATE SYSTEM */
+/*coordinateSystem/basic/coordinateSystemType.C*/
+/*coordinateSystem/derived/Cartesian/particleCartesian.C*/
+/*coordinateSystem/derived/axisymmetric/particleAxisymmetric.C*/
+
+/*coordinateSystem/timeStepModel/basic/TimeStepModel.C*/
+/*coordinateSystem/timeStepModel/derived/constantTimeStepModel/constantTimeStepModel.C*/
+/*coordinateSystem/timeStepModel/derived/variableTimeStepModel/variableTimeStepModel.C*/
+
+
+/* HEAT TRANSFER MODEL */
+heatTransferModel/heatTransferModel/HeatTransferModel.C
+heatTransferModel/Fox/Fox.C
+heatTransferModel/NoHeatTransfer/NoHeatTransfer.C
+heatTransferModel/Drake/Drake.C
+heatTransferModel/RanzMarshall/RanzMarshall.C
+heatTransferModel/Kavanau/Kavanau.C
+
+/* filter */
+Filter/finiteVolume/laplacianSchemes/laplacianScheme2/laplacianSchemes2.C
+Filter/finiteVolume/laplacianSchemes/gaussFOutLaplacianScheme/gaussFOutLaplacianSchemes.C
+Filter/finiteVolume/fvc/fvcPlus.C
+Filter/diffusionBasedSmoothing/diffusionBasedSmoothing.C
+Filter/diffusionBasedGasFiltering/diffusionBasedGasFiltering.C
+
+
+/* CLOUD */
+clouds/cloudSolution/cloudSolution.C
+clouds/solidParcelCloud.C
+
+/* PARCEL */
+parcels/solidParcel.C
+
+/*PARTICLE FORCE*/
+Force/Force/Force.C
+Force/forceList/forceList.C
+Force/Gravity/Gravity.C
+Force/Drag/CliftGauvinDrag/CliftGauvinDrag.C
+Force/Drag/HendersonDrag/HendersonDrag.C
+Force/Drag/SinghDrag/SinghDrag.C
+Force/Drag/BoikoDrag/BoikoDrag.C
+Force/Drag/ErgunWenYuDrag/ErgunWenYuDrag.C
+Force/Thermophoretic/Thermophoretic.C
+
+/* INITIALISE */
+initialiseSolidParcels/basic/configuration/configuration.C
+initialiseSolidParcels/basic/allConfigurations/allConfigurations.C
+initialiseSolidParcels/derived/zoneFill/zoneFill.C
+initialiseSolidParcels/derived/manualFill/manualFill.C
+
+/* FIELD MEASUREMENTS */
+boundaryMeasurements/boundaryMeasurements.C
+
+/* MACROSCOPIC PROPERTIES */
+macroscopicProperties/timeInterval/timeInterval.C
+macroscopicProperties/timeDataMeas/timeDataMeas.C
+macroscopicProperties/writeTimeData/writeTimeData.C
+macroscopicProperties/basic/solidField/solidField.C
+macroscopicProperties/basic/solidFieldProperties/solidFieldProperties.C
+macroscopicProperties/derived/solidVolFields/solidVolFields.C
+
+
+/* BOUNDARIES */
+boundaries/basic/solidBoundaries/solidBoundaries.C
+boundaries/basic/solidBoundaryBase/solidBoundaryBase.C
+boundaries/basic/solidCyclicBoundary/solidCyclicBoundary.C
+boundaries/basic/solidGeneralBoundary/solidGeneralBoundary.C
+boundaries/basic/solidPatchBoundary/solidPatchBoundary.C
+
+/* PATCH BOUNDARY MODELS */
+boundaries/derived/patchBoundaries/deletionPatch/deletionPatch.C
+boundaries/derived/patchBoundaries/specularWallPatch/specularWallPatch.C
+boundaries/derived/patchBoundaries/reboundWallPatch/reboundWallPatch.C
+boundaries/derived/patchBoundaries/noSlipTsirkunovWallPatch/noSlipTsirkunovWallPatch.C
+boundaries/derived/patchBoundaries/StasenkoWallPatch/StasenkoWallPatch.C
+
+/* GENERAL BOUNDARY MODELS */
+boundaries/derived/generalBoundaries/solidMassLoadingRatioInflowPatch/solidMassLoadingRatioInflowPatch.C
+
+/* CYCLIC BOUNDARY MODELS */
+
+
+/* CONTROLLERS */
+
+/* averaging methods */
+MPPIC/AveragingMethods/makeAveragingMethods.C
+
+MPPIC/ParticleStressModels/ParticleStressModel/ParticleStressModel.C
+MPPIC/ParticleStressModels/HarrisCrighton/HarrisCrighton.C
+MPPIC/ParticleStressModels/Lun/Lun.C
+MPPIC/ParticleStressModels/exponential/exponential.C
+
+MPPIC/TimeScaleModels/TimeScaleModel/TimeScaleModel.C
+MPPIC/TimeScaleModels/equilibrium/equilibrium.C
+MPPIC/TimeScaleModels/nonEquilibrium/nonEquilibrium.C
+MPPIC/TimeScaleModels/isotropic/isotropic.C
+
+MPPIC/PackingModels/PackingModel/PackingModel.C
+MPPIC/PackingModels/NoPacking/NoPacking.C
+MPPIC/PackingModels/Explicit/Explicit.C
+
+MPPIC/DampingModels/DampingModel/DampingModel.C
+MPPIC/DampingModels/NoDamping/NoDamping.C
+MPPIC/DampingModels/Relaxation/Relaxation.C
+
+MPPIC/IsotropyModels/IsotropyModel/IsotropyModel.C
+MPPIC/IsotropyModels/NoIsotropy/NoIsotropy.C
+MPPIC/IsotropyModels/Stochastic/Stochastic.C
+
+MPPIC/CorrectionLimitingMethods/CorrectionLimitingMethod/CorrectionLimitingMethod.C
+MPPIC/CorrectionLimitingMethods/noCorrectionLimiting/noCorrectionLimiting.C
+MPPIC/CorrectionLimitingMethods/absolute/absolute.C
+
+
+LIB = $(FOAM_USER_LIBBIN)/libLPT
