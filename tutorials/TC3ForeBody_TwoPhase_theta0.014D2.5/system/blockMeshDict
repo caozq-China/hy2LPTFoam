@@ -1,0 +1,116 @@
+// The OpenFOAM Project // File: blockMeshDict
+/*
+-------------------------------------------------------------------------------
+ =========         | dictionary
+ \\      /         |
+  \\    /          | Name:   blockMeshDict
+   \\  /           | Family: FoamX configuration file
+    \\/            |
+    F ield         | OpenFOAM version: 2.3
+    O peration     | Product of Nabla Ltd.
+    A and          |
+    M anipulation  | Email: Enquiries@Nabla.co.uk
+-------------------------------------------------------------------------------
+*/
+// FoamX Case Dictionary.
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           dictionary;
+    object          blockMeshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;
+
+alpha #calc"degToRad(2)";
+theta #calc"degToRad(70)";
+Rb 1.2;
+Rn #calc"0.5*$Rb";
+Rs #calc"0.05*$Rb";
+
+Rminus 0.1;
+RO 3;
+x10 -0.09;
+
+vertices
+(
+(0.0000000000	0.0000000000	0.0000000000) //0 heatshield apex
+(#calc"$Rn*(1-sin($theta))*cos($alpha)" #calc"$Rn*cos($theta)" #calc"$Rn*(1-sin($theta))*sin($alpha)")//1
+(#calc"$x10*cos($alpha)" #calc"sqrt($RO*$RO-($x10-$RO+$Rminus)*($x10-$RO+$Rminus))" #calc"$x10*sin($alpha)")//2
+(-$Rminus 0 0)//3
+(#calc"$Rn*(1-sin($theta))*cos($alpha)" #calc"$Rn*cos($theta)" #calc"-$Rn*(1-sin($theta))*sin($alpha)")//4
+(#calc"$x10*cos($alpha)" #calc"sqrt($RO*$RO-($x10-$RO+$Rminus)*($x10-$RO+$Rminus))" #calc"-$x10*sin($alpha)")//5
+);
+
+blocks 
+( 
+    hex (0 1 4 0 3 2 5 3) (10 10 1) simpleGrading (1 1 1)		//block 0
+);
+
+
+edges
+(
+
+);
+
+boundary
+(
+ inlet
+  {
+    type patch;
+    faces
+    (
+	(3 2 5 3)
+    );
+  }
+
+  object
+  {
+    type wall;
+    faces
+    (
+      (0 1 4 0)
+    );
+  }
+  outlet
+  {
+    type patch;
+    faces
+    (
+    	
+    );
+   }
+  front
+  {
+    type wedge;
+    faces
+    (
+    	(0 1 2 3)
+    );
+   }
+  back
+  {
+    type wedge;
+    faces
+    (
+	(0 4 5 3)
+    );
+   }
+
+ bottom
+ {
+    type symmetryPlane;
+    faces
+    (
+      (0 3 3 0)
+    );
+ }
+);
+
+mergePatchPairs
+(
+);

@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1706                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+fluxScheme            Kurganov;
+
+ddtSchemes
+{
+    default           Euler;
+}
+
+gradSchemes
+{
+    default           Gauss linear;
+  //if convergence is difficult, add:
+  //grad(U)           cellLimited Gauss linear 1; 
+}
+
+divSchemes
+{
+    default           Gauss linear;//none;
+    div(tauMC)        Gauss linear;
+    div(phi,U)        Gauss limitedLinearV 1;
+    
+    // Species diffusion
+    div(diffusiveFluxes)   Gauss linear;
+    div(phi,Yi_h)     Gauss limitedLinear 1;
+    
+    // Turbulence modelling
+    div(phi,k)        Gauss limitedLinear 1;
+    div(phi,omega)    Gauss limitedLinear 1;
+    div(phi,epsilon)  Gauss limitedLinear 1;
+    
+    // Needed when there are electrons in the gas mix
+    div(U)            Gauss linear;
+    
+    div(thetaCfPhi,Yi_h) Gauss limitedLinear 1;
+}
+
+laplacianSchemes
+{
+    default           Gauss linear corrected;
+    
+    laplacian(DT,tempDiffScalar) Gauss linear corrected;
+    laplacian(DT,tempDiffVector) Gauss linear corrected;
+    laplacian(DT,tempExplicitDiffScalar) Gauss linear corrected;
+    gasFilterDiffusion Gauss linear corrected;
+    gasFilterDiffusion2 GaussFOut linear corrected;
+}
+
+interpolationSchemes
+{
+    default           linear;
+    reconstruct(rho)  vanLeer;
+    reconstruct(U)    vanLeerV;
+    reconstruct(T)    vanLeer;
+/*    reconstruct(rho)  vanAlbada;*/
+/*    reconstruct(U)    vanAlbadaV;*/
+/*    reconstruct(T)    vanAlbada;*/
+}
+
+snGradSchemes
+{
+    default          corrected;
+}
+
+
+// ************************************************************************* //
