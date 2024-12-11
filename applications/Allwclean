@@ -1,0 +1,14 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+cd $WM_PROJECT_USER_DIR/applications/preProcessing/solidInitialise/
+wclean
+
+cd $WM_PROJECT_USER_DIR/applications/solvers/hy2LPTFoam/BCs
+wclean
+
+cd $WM_PROJECT_USER_DIR/applications/solvers/hy2LPTFoam/
+wclean
+
+echo "-----  COMPLETE CLEAN APPLICATIONS  -----"
+#------------------------------------------------------------------------------
